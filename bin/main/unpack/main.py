@@ -19,14 +19,19 @@ class Main:
         self.AutoValid = self.ReaderData["auto-valid"]
         self.QAModel = self.ReaderData["qamodel"]
         self.Purpose = self.ReaderData["purpose"]
+        self.Log = self.ReaderData["log"]
         self.Filename = os.path.basename(__file__)
         self.ArgParser = argparse.ArgumentParser(description=f"use {self.Filename}")
         self.ArgParser.add_argument("--setfile",type=str)
         self.ArgParser.add_argument("--file",type=str)
+        self.ArgParser.add_argument("--question",type=str)
         self.ArgParser.add_argument("--usefile",type=bool)
         self.Args = self.ArgParser.parse_args()
         self.CudaEnabled = torch.cuda.is_available()
-        logging.basicConfig(filename=self.LoggerDir,level=logging.DEBUG, format='[%(asctime)s|%(levelname)s]: %(message)s')
+        if self.Log:
+            logging.basicConfig(filename=self.LoggerDir,level=logging.DEBUG, format='[%(asctime)s|%(levelname)s]: %(message)s')
+        else:
+            print("[WARN]: It is advised to use Logging")
         self.Logger = logging.getLogger(__name__)
         self.Logger.debug(f"[START]: {self.ID}")
         print(f"[LOG]: Logger: {self.LoggerDir}")
@@ -39,20 +44,32 @@ class Main:
         self.FileDir = self.Args.file
         print(f"[FILESYSTEM]: Attempting Dir: {self.FileDir}")
         if self.FileDir:
-            ValidDir = os.path.isdir(self.FileDir)
+            ValidDir = os.path.isdir(os.path.dirname(str(self.FileDir).strip()))
             if ValidDir:
                 print("[FILESYSTEM]: Directory Validated")
-                print("[INFO]: Waiting for Question")
-                self.Question = input("[INPUT]: ")
+                self.QuestionArg = self.Args.question
+                if self.QuestionArg:
+                    print("[INFO]: Using Question ARG")
+                    self.Question = self.QuestionArg
+                else:
+                    print("[INFO]: Waiting for Question")
+                    self.Question = input("[INPUT]: ")
                 self.Result = self.QAPipe(
                     self.FileDir,
                     self.Question
                 )
+                self.QAResults = [
+                    self.Result["score"],
+                    self.Result["answer"]
+                ]
+                print(f"[ANALYIZE]: Score: {self.QAResults[0]}")
+                print(f"[ANALYIZE]: Result: {self.QAResults[1]}")
             else:
                 print(f"[FILESYSTEM]: Invalid Dir: {self.FileDir}")
                 print("[ERROR]: The cause of this error is above")
         else:
             print(f"[ERROR]: No file set, use {self.Filename} --file <filedirhere>")
+            raise RuntimeError("Error")
     def ValidateOS(self):
         self.ValidOS = False
         if self.OS == "nt":
@@ -87,7 +104,7 @@ class Main:
             pass
         elif self.OS == "java":
             print("[ERROR]: BUILD NOT SUPPORTED IN JAVA")
-            raise RuntimeError("[BUILD-RTE]: Error Raised")
+            raise RuntimeError("Error Raised")
 
 if __name__ == "__main__":
     def MainLoop(Args,Vars):
