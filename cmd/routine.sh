@@ -1,22 +1,16 @@
 #!/bin/bash
-url="your_url"
-file="your_file"
+url="https://raw.githubusercontent.com/connor33341/PDF-Question-Answerer/main/.version"
+file=".version"
+repo="connor33341/PDF-Question-Answerer"
 
-# Git repository to update
-repo="your_repo"
-
-# Send the GET request and save the response body
 response=$(curl -s "$url")
-
-# Read the contents of the file
 contents=$(cat "$file")
 
-# Compare the response body with the contents of the file
 if [ "$response" != "$contents" ]; then
-  # If they're not equal, update the file and the Git repository
   echo "$response" > "$file"
   cd "$repo"
+  git pull
   git add "$file"
-  git commit -m "Updated file"
-  git push
+  install.bat
+  git commit -m "Update Version"
 fi
