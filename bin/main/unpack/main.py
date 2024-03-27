@@ -5,6 +5,7 @@ import argparse
 import logging
 import torch
 import uuid
+from typing import Optional
 
 # & C:/Users/Connor/AppData/Local/Microsoft/WindowsApps/python3.10.exe d:/GitHub/PDF-Question-Answerer/bin/main/unpack/main.py --file
 class Main:
@@ -24,8 +25,10 @@ class Main:
         self.ArgParser.add_argument("--file",type=str)
         self.ArgParser.add_argument("--usefile",type=bool)
         self.Args = self.ArgParser.parse_args()
-        logging.basicConfig(level=logging.INFO, format='[%(asctime)s|%(levelname)s]: %(message)s')
+        logging.basicConfig(filename=self.LoggerDir,level=logging.DEBUG, format='[%(asctime)s|%(levelname)s]: %(message)s')
         self.Logger = logging.getLogger(__name__)
+        self.Logger.debug(f"[START]: {self.ID}")
+        print(f"[LOG]: Logger: {self.LoggerDir}")
         self.QAPipe = pipeline(
             self.Purpose,
             model=self.QAModel
@@ -76,28 +79,46 @@ class Main:
             self.ValidateOS()
         print("[INFO]: OS Validated")
         if self.OS == "nt":
-            try:
-                self.Analyize()
-            except (Exception) as Error:
-                print(f"[ERROR]: {Error}")
+            self.Analyize()
         elif self.OS == "posix":
-            try:
-                pass
-            except (Exception) as Error:
-                print(f"[ERROR]: {Error}")
+            pass
         elif self.OS == "java":
             print("[ERROR]: BUILD NOT SUPPORTED IN JAVA")
             raise RuntimeError("[BUILD-RTE]: Error Raised")
 
 if __name__ == "__main__":
-    Directory = os.getcwd()
-    print(f"[INFO]: Using CWD: {Directory}")
-    MainClass = Main(f"{Directory}\\bin\main\config.json",Directory)
-    try:
-        print("[INFO]: MainClass Begin")
-        MainClass.Run()
-    except (Exception) as Error:
-        print(f"[ERROR]: {Error}")
-        os.system("pause")
+    def MainLoop(Args):
+        Directory = os.getcwd()
+        print(f"[INFO]: Using CWD: {Directory}")
+        if Args:
+            print("[WARN]: Using Custom ARGS")
+            KWargs = {'item{}'.format(i): x for i, x in enumerate(Args)}
+            MainClass = Main(**KWargs)
+        else:
+            MainClass = Main(f"{Directory}\\bin\main\config.json",Directory)
+        try:
+            print("[INFO]: MainClass Begin")
+            MainClass.Run()
+        except (Exception) as Error:
+            print(f"[ERROR]: {Error}")
+            ValidInput = False
+            while ValidInput == False:
+                print("[ERRORHANDLE]: Would you like to restart the MainLoop?")
+                Continue = input("[INPUT:Y/N]: ")
+                if str(Continue).lower() == "y":
+                    MainClass.Logger.error(Error)
+                    ValidInput = True
+                    print("[PRGM]: Would you like to set MainClass varibles? Leave blank for none")
+                    print("[PRGM]: Warning only change varibles that you understand")
+                    ProgramArgs = str(input("[INPUT]: "))
+                    ProgramArgs.split(",")
+                    for Arg in ProgramArgs:
+                        print(f"[PRGM:ARG]: {Arg}")
+                    print("[PRGM]: MainLoop Restart")
+                    MainLoop(ProgramArgs)
+                else:
+                    MainClass.Logger.critical(Error)
+                    ValidInput = True
+    MainLoop(None)
     print("[SYSTEM]: Program Ended")
     os.system("pause")
