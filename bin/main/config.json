@@ -1,0 +1,5 @@
+{
+    "auto-valid": false,
+    "purpose": "document-question-answering",
+    "model": "impira/layoutlm-document-qa"
+}

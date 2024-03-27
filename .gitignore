@@ -1,1 +1,3 @@
 *.howto
+*.log
+.env
