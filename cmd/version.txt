@@ -1,1 +1,14 @@
-PREBUILD 1.2
+ --- Build Info ---
+PREBUILD 1.5
+INDEV 1.2
+ --- File Info ---
+MAIN 1.3
+INSTALLER 1.1 (ARCHIVE VERSION)
+ROUTINE 1.1 (ARCHIVE VERSION)
+REQUIREMENTS 1.0 (INDEV VERSION)
+ --- Config Info ---
+MAIN/CONFIG 1.3 (PREBUILD VERSION)
+LAUNCHER/CONFIG 1.1 (ARCHIVE VERSION)
+ --- Credits ---
+https://github.com/connor33341
+https://connor33341.github.io/AI/PDFQAA/manual.html?ref=repo&handler=handler.php&use=handler.json&resource=https://resourceloader.connor33341.workers.dev/load/WEB:MAIN/AI:PDFQAA/resourceloader/usefs/rl.php?job=resource&rayid=ray-id
