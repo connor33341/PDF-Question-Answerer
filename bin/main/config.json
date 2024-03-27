@@ -1,6 +1,8 @@
 {
-    "auto-valid": false,
+    "auto-valid": true,
     "purpose": "document-question-answering",
     "qamodel": "impira/layoutlm-document-qa",
-    "log": false
+    "log": true,
+    "tesseract": "C:\\Users\\Connor\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\Scripts\\pytesseract.exe",
+    "bypass-tr": true
 }

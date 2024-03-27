@@ -5,9 +5,11 @@ import argparse
 import logging
 import torch
 import uuid
+import pytesseract
 from typing import Optional
 
 # & C:/Users/Connor/AppData/Local/Microsoft/WindowsApps/python3.10.exe d:/GitHub/PDF-Question-Answerer/bin/main/unpack/main.py --file
+# & C:/Users/Connor/AppData/Local/Microsoft/WindowsApps/python3.10.exe d:/GitHub/PDF-Question-Answerer/bin/main/unpack/main.py --file D:\GitHub\PDF-Question-Answerer\test\invoice-template-us-neat-750px.png
 class Main:
     def __init__(self,Config,Dir,Vars: Optional[str] = None):
         self.Config = Config
@@ -20,6 +22,15 @@ class Main:
         self.QAModel = self.ReaderData["qamodel"]
         self.Purpose = self.ReaderData["purpose"]
         self.Log = self.ReaderData["log"]
+        self.Tesseract = self.ReaderData["tesseract"]
+        self.BypassTR = self.ReaderData["bypass-tr"]
+        try:
+            if self.BypassTR:
+                print("[INFO]: Google Tesseract Bypassed")
+            else:
+                pytesseract.pytesseract.tesseract_cmd = rf"{str(self.Tesseract)}"
+        except (Exception) as Error:
+            print("[WARN]: PyTesseract Failed")
         self.Filename = os.path.basename(__file__)
         self.ArgParser = argparse.ArgumentParser(description=f"use {self.Filename}")
         self.ArgParser.add_argument("--setfile",type=str)
