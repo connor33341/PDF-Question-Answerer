@@ -9,7 +9,7 @@ contents=$(cat "$file")
 if [ "$response" != "$contents" ]; then
   echo "$response" > "$file"
   #cd "$repo"
-  git pull
-  git add "$file"
-  git commit -m "Update Version"
+  bash git pull
+  bash git add "$file"
+  bash git commit -m "Update Version"
 fi
