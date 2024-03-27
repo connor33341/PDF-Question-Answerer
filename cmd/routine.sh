@@ -1,5 +1,5 @@
 #!/bin/bash
-url="https://raw.githubusercontent.com/connor33341/PDF-Question-Answerer/main/version.txt"
+url="https://raw.githubusercontent.com/connor33341/PDF-Question-Answerer/main/cmd/version.txt"
 file="version.txt"
 repo="connor33341/PDF-Question-Answerer"
 
