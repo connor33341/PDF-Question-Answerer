@@ -1,0 +1,8 @@
+{
+    "routine": "cmd/routine.sh",
+    "method": "bash",
+    "start": "cmd/start.bat",
+    "install": "cmd/install.bat",
+    "message": "Warning: GIT and BASH are required to continue",
+    "pause": true
+}

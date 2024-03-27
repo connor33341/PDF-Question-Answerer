@@ -51,7 +51,9 @@ class Launcher:
             raise RuntimeError("[BUILD-RTE]: Error Raised")
 
 if __name__ == "__main__":
-    LauncherClass = Launcher("bin/launcher/unpack/config.json")
+    Directory = os.getcwd()
+    print(f"[INFO]: Using CWD: {Directory}")
+    LauncherClass = Launcher(f"{Directory}\\bin\launcher\config.json")
     try:
         print("[INFO]: LauncherClass Begin")
         print(f"[MSG]: {LauncherClass.Message}")
@@ -61,6 +63,7 @@ if __name__ == "__main__":
             print("[INFO]: Starting")
         else:
             print("[INFO]: Starting")
+        LauncherClass.Run()
     except (Exception) as Error:
         print(f"[ERROR]: {Error}")
         os.system("pause")
