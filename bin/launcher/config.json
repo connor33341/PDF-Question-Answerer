@@ -3,6 +3,6 @@
     "method": "bash",
     "start": "cmd/start.bat",
     "install": "cmd/install.bat",
-    "message": "Warning: GIT and BASH are required to continue",
+    "message": "Warning: GIT and BASH are required to continue. [MACOS,LINUX/UNIX,WINDOWS]",
     "pause": true
 }
