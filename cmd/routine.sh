@@ -11,5 +11,6 @@ if [ "$response" != "$contents" ]; then
   #cd "$repo"
   git pull
   git add "$file"
+  pip install -r requirements.txt
   git commit -m "Update Version"
 fi
