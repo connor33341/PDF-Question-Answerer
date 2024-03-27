@@ -9,7 +9,7 @@ from typing import Optional
 
 # & C:/Users/Connor/AppData/Local/Microsoft/WindowsApps/python3.10.exe d:/GitHub/PDF-Question-Answerer/bin/main/unpack/main.py --file
 class Main:
-    def __init__(self,Config,Dir):
+    def __init__(self,Config,Dir,Vars: Optional[str] = None):
         self.Config = Config
         self.Dir = Dir
         self.ID = uuid.uuid4()
@@ -25,17 +25,16 @@ class Main:
         self.ArgParser.add_argument("--file",type=str)
         self.ArgParser.add_argument("--usefile",type=bool)
         self.Args = self.ArgParser.parse_args()
+        self.CudaEnabled = torch.cuda.is_available()
         logging.basicConfig(filename=self.LoggerDir,level=logging.DEBUG, format='[%(asctime)s|%(levelname)s]: %(message)s')
         self.Logger = logging.getLogger(__name__)
         self.Logger.debug(f"[START]: {self.ID}")
         print(f"[LOG]: Logger: {self.LoggerDir}")
+        self.Logger.debug(f"[CUDA]: {self.CudaEnabled}")
         self.QAPipe = pipeline(
             self.Purpose,
             model=self.QAModel
         )
-        """
-        parser.add_argument('integers', metavar='N', type=int, nargs='+'
-        """
     def Analyize(self):
         self.FileDir = self.Args.file
         print(f"[FILESYSTEM]: Attempting Dir: {self.FileDir}")
@@ -78,8 +77,12 @@ class Main:
             self.OS = str(input("[INPUT]: ")).lower()
             self.ValidateOS()
         print("[INFO]: OS Validated")
+        self.Logger.debug(f"[OS]: {self.OS}")
         if self.OS == "nt":
-            self.Analyize()
+            if self.CudaEnabled:
+                self.Analyize()
+            else:
+                print("[CUDA]: Requires a NVIDIA GPU w/CUDA, check if you have the NVIDIA CudaCognitiveToolKit Instaled, or torch configured")
         elif self.OS == "posix":
             pass
         elif self.OS == "java":
@@ -87,12 +90,14 @@ class Main:
             raise RuntimeError("[BUILD-RTE]: Error Raised")
 
 if __name__ == "__main__":
-    def MainLoop(Args):
+    def MainLoop(Args,Vars):
         Directory = os.getcwd()
         print(f"[INFO]: Using CWD: {Directory}")
         if Args:
             print("[WARN]: Using Custom ARGS")
+            list(Args).append(str(Vars))
             KWargs = {'item{}'.format(i): x for i, x in enumerate(Args)}
+            #KWargs = {key: value for key, value in Args}
             MainClass = Main(**KWargs)
         else:
             MainClass = Main(f"{Directory}\\bin\main\config.json",Directory)
@@ -108,17 +113,25 @@ if __name__ == "__main__":
                 if str(Continue).lower() == "y":
                     MainClass.Logger.error(Error)
                     ValidInput = True
-                    print("[PRGM]: Would you like to set MainClass varibles? Leave blank for none")
-                    print("[PRGM]: Warning only change varibles that you understand")
+                    print("[PRGM]: Would you like to set MainClass args? Leave blank for none")
+                    print("[PRGM]: Warning only change args that you understand")
                     ProgramArgs = str(input("[INPUT]: "))
-                    ProgramArgs.split(",")
+                    ProgramArgs = ProgramArgs.split(",")
+                    print("[PRGM]: Would you like to override MainClass varibles")
+                    print("[PRGM]: Warning only change varibles that you understand")
+                    ProgramVars = str(input("[INPUT]: "))
+                    ProgramVars = ProgramVars.split(",")
                     for Arg in ProgramArgs:
                         print(f"[PRGM:ARG]: {Arg}")
+                        MainClass.Logger.debug(f"[PRGM:ARG]: {Arg}")
+                    for Var in ProgramVars:
+                        print(f"[PRGM:VAR]: {Var}")
+                        MainClass.Logger.debug(f"[PRGM:VAR]: {Var}")
                     print("[PRGM]: MainLoop Restart")
-                    MainLoop(ProgramArgs)
+                    MainLoop(ProgramArgs,ProgramVars)
                 else:
                     MainClass.Logger.critical(Error)
                     ValidInput = True
-    MainLoop(None)
+    MainLoop(None,None)
     print("[SYSTEM]: Program Ended")
     os.system("pause")
