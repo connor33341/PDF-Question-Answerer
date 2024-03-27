@@ -12,6 +12,11 @@ class Main:
         if self.OS == "nt":
             print("[INFO]: Building for Windows")
             self.ValidOS = True
+        elif self.OS == "posix":
+            print("[INFO]: Building for Linux/Unix")
+            self.ValidOS = True
+        elif self.OS == "custom":
+            self.ValidOS = True
     def Run(self):
         self.OS = None
         self.OS = os.name
