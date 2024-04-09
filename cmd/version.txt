@@ -1,6 +1,5 @@
  --- Build Info ---
-PREBUILD 1.5
-INDEV 1.2
+FINAL BUILD OF BRANCH
  --- File Info ---
 MAIN 1.3
 INSTALLER 1.1 (ARCHIVE VERSION)
