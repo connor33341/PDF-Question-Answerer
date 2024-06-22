@@ -1,5 +1,6 @@
 # PDF Question Answerer
 ### Notice: No longer supports MacOSx, Linux/Unix and Java
+### Version: this is not the most up to date version, newer versions can be found on my discord
 If someone has the time and paitence to debug and reverse engineer my installers fork and add support
 
 ---
