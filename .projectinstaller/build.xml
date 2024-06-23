@@ -1,2 +1,18 @@
 <ProjectInstallerBuild version=1.0>
 <ProjectBuild>
+	<ProjectConfig>
+		<Project:Name>CWAI-PDFQA</Project>
+		<Project:Author>connor33341</Project>
+		<Project:HashMap>https://connor33341.github.io/tools/loader/hashmap.xml</Project>
+	</ProjectConfig>
+	<ProjectFeatures>
+		<GitJsonGen type="cmd">pipeto projectinstaller -g {JsonName}.json -d {ProjectDir}/.git/.projectinstaller -b *</GitJsonGen>
+		<BuildTools>
+			<BuildTool:CLIDep as="projectinstaller">projectinstallercli</BuildTool>
+			<BuildTool:PipeDep as="pipeto">pipeto.exe</BuildTool>
+		</BuildTools>
+	</ProjectFeatures>
+	<Authority>
+		<PIBPA>connor33341/pdf-question-answers@connor33341.github.io/pibpa/indexes/pibpamain.json</PIBPA>
+	</Authority>
+</ProjectBuild>
